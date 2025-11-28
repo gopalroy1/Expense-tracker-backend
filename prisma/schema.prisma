@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  phone     String?   @unique
+  password  String
+  city      String?
+  state     String?
+  pincode   String?
+  address   String?
+  dob       DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // RELATIONS
+  accountTypes    AccountType[]
+  networthEntries NetworthEntry[]
+}
+
+model AccountType {
+  id           String        @id @default(cuid())
+  userId       String
+  type         String
+  accountNames AccountName[]
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type]) // unique per user
+}
+
+model AccountName {
+  id            String @id @default(cuid())
+  accountTypeId String
+  name          String
+
+  accountType AccountType @relation(fields: [accountTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([accountTypeId, name])
+}
+
+model NetworthEntry {
+  id           String   @id @default(cuid())
+  userId       String
+  accountType  String
+  accountName  String
+  balance      Float
+  snapshotDate DateTime
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
