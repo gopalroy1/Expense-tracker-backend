@@ -25,7 +25,7 @@ const allowedOrigins = [
   // "https://your-domain.com"
 ];
 app.use(cors({
-  origin: (origin, callback) => callback(null, true),
+  origin: true,
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
