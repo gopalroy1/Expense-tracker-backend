@@ -17,15 +17,19 @@ dotenv.config();
 const app = express();
 app.use(cookieParser());  
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  // later you will add:
+  // "http://<EC2-IP>",
+  // "https://your-domain.com"
+];
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin:allowedOrigins,
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
-// app.options("*", cors({
-//   origin: "http://localhost:5173",
-//   credentials: true
-// }));
+
 
   
 app.use(express.json());
