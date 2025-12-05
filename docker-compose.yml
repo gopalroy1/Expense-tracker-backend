@@ -1,0 +1,31 @@
+version: "1"
+
+services:
+  db:
+    image: postgres:15
+    container_name: expense-db
+    environment:
+      POSTGRES_USER: gopalroy
+      POSTGRES_PASSWORD: 9674661140
+      POSTGRES_DB: expense_tracker
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: expense-backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    command: >
+      sh -c "npx prisma migrate deploy &&
+             pm2-runtime dist/index.js"
+    restart: unless-stopped
+
+volumes:
+  pgdata:
