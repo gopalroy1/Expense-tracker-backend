@@ -25,11 +25,10 @@ const allowedOrigins = [
   // "https://your-domain.com"
 ];
 app.use(cors({
-  origin:allowedOrigins,
+  origin:"*",
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
-
 
   
 app.use(express.json());
