@@ -15,7 +15,7 @@ jobs:
       # - name: Checkout Repository
       #   uses: actions/checkout@v4
 
-      # 2. Connect to EC2 via SSH and run commands on EC2
+      # 2. Connect to EC2 via SSH and run commands on EC2ssd
       - name: SSH into EC2 and deploy
         uses: appleboy/ssh-action@v1.0.0
         with:
