@@ -1,35 +1,53 @@
-name: Deploy to EC2
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
-      - main   # deploy only when you push to main branch
+      - main
 
 jobs:
-  deploy:
+  # =======================
+  #       CI JOB
+  # =======================
+  build:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      # # 1. Checkout Code (required before anything else)
-      # - name: Checkout Repository
-      #   uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-      # 2. Connect to EC2 via SSH and run commands on EC2ssd
-      - name: SSH into EC2 and deploy
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      # (optional) lint step
+      # - name: Run lint
+      #   run: npm run lint
+
+  # =======================
+  #       CD JOB
+  # =======================
+  deploy:
+    needs: build     # <---- DO NOT REMOVE. Makes CD wait for CI to pass.
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.EC2_HOST }}         # example: 13.232.1.113
-          username: ${{ secrets.EC2_USERNAME }} # example: ubuntu
-          key: ${{ secrets.EC2_KEY }}   # private key content
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_KEY }}
+
           script: |
             cd ~/Expense-tracker-backend
-
-            echo "🔄 Pulling latest code..."
             git pull origin main
-
-            echo "🔧 Making deploy script executable..."
             chmod +x deploy.sh
-
-            echo "🚀 Running deployment..."
             ./deploy.sh
