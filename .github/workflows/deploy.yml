@@ -1,0 +1,29 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main   # deploy only when you push to main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # # 1. Checkout Code (required before anything else)
+      # - name: Checkout Repository
+      #   uses: actions/checkout@v4
+
+      # 2. Connect to EC2 via SSH and run commands on EC2
+      - name: SSH into EC2 and deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}         # example: 13.232.1.113
+          username: ${{ secrets.EC2_USERNAME }} # example: ubuntu
+          key: ${{ secrets.EC2 }}   # private key content
+          script: |
+            cd ~/Expense-tracker-backend
+            git pull origin main
+            docker compose down
+            docker compose up --build -d
