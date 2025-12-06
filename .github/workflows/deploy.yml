@@ -23,5 +23,5 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }} # example: ubuntu
           key: ${{ secrets.EC2_KEY }}   # private key content
           script: |
-            cd ~/Expense-tracker-backend
+            cd /home/ubuntu
             bash deploy.sh
