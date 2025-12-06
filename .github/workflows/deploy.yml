@@ -23,9 +23,5 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }} # example: ubuntu
           key: ${{ secrets.EC2_KEY }}   # private key content
           script: |
-            echo "=== CURRENT DIRECTORY ==="
-            pwd
-            echo "=== LIST FILES ==="
-            ls -la
-            echo "=== LOOKING FOR deploy.sh ==="
-            find / -maxdepth 4 -name "deploy.sh" 2>/dev/null
+            cd Expense-tracker-backend
+            bash deploy.sh
