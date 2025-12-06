@@ -21,7 +21,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST }}         # example: 13.232.1.113
           username: ${{ secrets.EC2_USERNAME }} # example: ubuntu
-          key: ${{ secrets.EC2 }}   # private key content
+          key: ${{ secrets.EC2_KEY }}   # private key content
           script: |
             cd ~/Expense-tracker-backend
             git pull origin main
