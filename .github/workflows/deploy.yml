@@ -24,6 +24,4 @@ jobs:
           key: ${{ secrets.EC2_KEY }}   # private key content
           script: |
             cd ~/Expense-tracker-backend
-            git pull origin main
-            docker compose down
-            docker compose up --build -d
+            bash deploy.sh
