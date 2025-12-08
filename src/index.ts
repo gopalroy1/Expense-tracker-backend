@@ -32,21 +32,12 @@ const allowedOrigins = [
   "https://marlen-overrigid-lonelily.ngrok-free.dev"
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // allow Postman, curl, mobile apps
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true); // allow exact origins
-      } else {
-        console.log("❌ BLOCKED ORIGIN:", origin);
-        return callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
   
 app.use(express.json());
