@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-    "start": "pm2-runtime dist/index.js",
+    "start":"pm2 start dist/index.js --name expense-tracker-backend",
+    "restart": "pm2 restart expense-tracker-backend",
+    "stop": "pm2 stop expense-tracker-backend",
+    "delete":"pm2 delete expense-tracker-backend",
     "build": "tsc"
   },
   "keywords": [],
