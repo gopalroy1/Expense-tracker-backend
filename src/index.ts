@@ -27,7 +27,9 @@ const allowedOrigins = [
   "https://expense-tracker-frontend-2rx8wjhgk-gopal-roys-projects-4596e853.vercel.app",
   "https://expense-tracker-frontend-ten-sooty.vercel.app",
   "https://expense-tracker-frontend-git-main-gopal-roys-projects-4596e853.vercel.app",
-  "https://expense-tracker-frontend-nfu0mtg3y-gopal-roys-projects-4596e853.vercel.app"
+  "https://expense-tracker-frontend-nfu0mtg3y-gopal-roys-projects-4596e853.vercel.app",
+    /\.trycloudflare\.com$/,
+
 ];
 
 
