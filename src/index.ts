@@ -27,22 +27,21 @@ const allowedOrigins = [
   "expense-tracker-frontend-nfu0mtg3y-gopal-roys-projects-4596e853.vercel.app"
 
 ];
-app.use(cors({
-  origin: function (origin, callback) {
-      console.log("CORS CHECK ORIGIN:", origin);
-
-      // Allow requests with no origin (mobile apps, curl, Postman)
-      if (!origin) return callback(null, true);
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // allow Postman, curl, mobile apps
 
       if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
+        return callback(null, true); // allow exact origins
       } else {
-        return callback(new Error("Not allowed by CORS: " + origin));
+        console.log("❌ BLOCKED ORIGIN:", origin);
+        return callback(new Error("Not allowed by CORS"));
       }
     },
-  credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"],
-}));
+    credentials: true,
+  })
+);
 
   
 app.use(express.json());
