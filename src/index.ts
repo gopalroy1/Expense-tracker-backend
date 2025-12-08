@@ -21,7 +21,11 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   "https://expense-tracker-frontend-2rx8wjhgk-gopal-roys-projects-4596e853.vercel.app",
-  "https://marlen-overrigid-lonelily.ngrok-free.dev"
+  "https://marlen-overrigid-lonelily.ngrok-free.dev",
+  "expense-tracker-frontend-ten-sooty.vercel.app",
+  "expense-tracker-frontend-git-main-gopal-roys-projects-4596e853.vercel.app",
+  "expense-tracker-frontend-nfu0mtg3y-gopal-roys-projects-4596e853.vercel.app"
+
 ];
 app.use(cors({
   origin: allowedOrigins,
