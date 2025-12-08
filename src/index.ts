@@ -21,7 +21,8 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   "https://expense-tracker-frontend-2rx8wjhgk-gopal-roys-projects-4596e853.vercel.app/",
-  "https://expense-tracker-frontend-2rx8wjhgk-gopal-roys-projects-4596e853.vercel.app"
+  "https://expense-tracker-frontend-2rx8wjhgk-gopal-roys-projects-4596e853.vercel.app",
+  "https://marlen-overrigid-lonelily.ngrok-free.dev"
   // later you will add:
   // "http://<EC2-IP>",
   // "https://your-domain.com"
