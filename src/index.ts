@@ -20,24 +20,36 @@ app.use(cookieParser());
 const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
-
+  /\.ngrok-free\.app$/,
+  /\.ngrok-free\.dev$/,
+  "https://*.ngrok-free.dev",
+  "https://*.ngrok-free.app",
   "https://expense-tracker-frontend-2rx8wjhgk-gopal-roys-projects-4596e853.vercel.app",
-
-  // Preview URLs MUST start with https://
   "https://expense-tracker-frontend-ten-sooty.vercel.app",
   "https://expense-tracker-frontend-git-main-gopal-roys-projects-4596e853.vercel.app",
-  "https://expense-tracker-frontend-nfu0mtg3y-gopal-roys-projects-4596e853.vercel.app",
-
-  // NGROK (must be included exactly)
-  "https://marlen-overrigid-lonelily.ngrok-free.dev"
+  "https://expense-tracker-frontend-nfu0mtg3y-gopal-roys-projects-4596e853.vercel.app"
 ];
 
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-}));
+
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      if (!origin) return cb(null, true);
+
+      if (allowedOrigins.find(o => {
+        if (o instanceof RegExp) return o.test(origin);
+        return o === origin;
+      })) {
+        cb(null, true);
+      } else {
+        console.log("❌ CORS BLOCKED:", origin);
+        cb(new Error("CORS blocked"));
+      }
+    },
+    credentials: true,
+  })
+);
+
 
   
 app.use(express.json());
