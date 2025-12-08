@@ -20,13 +20,18 @@ app.use(cookieParser());
 const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
-  "https://expense-tracker-frontend-2rx8wjhgk-gopal-roys-projects-4596e853.vercel.app",
-  "https://marlen-overrigid-lonelily.ngrok-free.dev",
-  "expense-tracker-frontend-ten-sooty.vercel.app",
-  "expense-tracker-frontend-git-main-gopal-roys-projects-4596e853.vercel.app",
-  "expense-tracker-frontend-nfu0mtg3y-gopal-roys-projects-4596e853.vercel.app"
 
+  "https://expense-tracker-frontend-2rx8wjhgk-gopal-roys-projects-4596e853.vercel.app",
+
+  // Preview URLs MUST start with https://
+  "https://expense-tracker-frontend-ten-sooty.vercel.app",
+  "https://expense-tracker-frontend-git-main-gopal-roys-projects-4596e853.vercel.app",
+  "https://expense-tracker-frontend-nfu0mtg3y-gopal-roys-projects-4596e853.vercel.app",
+
+  // NGROK (must be included exactly)
+  "https://marlen-overrigid-lonelily.ngrok-free.dev"
 ];
+
 app.use(
   cors({
     origin: function (origin, callback) {
