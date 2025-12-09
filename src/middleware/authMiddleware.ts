@@ -2,20 +2,36 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 export interface AuthRequest extends Request {
-  user?: { id: string };
+  user?: any;
 }
 
 export const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
-    console.log("auth middleware called")
-  const token = req.cookies.token;
+  console.log("🔐 Auth middleware called");
 
+  let token: string | undefined;
+
+  // 1️⃣ Prefer Authorization header
+  if (req.headers.authorization?.startsWith("Bearer ")) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+
+  // 2️⃣ Fallback to cookie if no header present
+  if (!token && req.cookies?.token) {
+    console.log("No header token")
+    token = req.cookies.token;
+  }
+
+  // 3️⃣ If still no token → reject
   if (!token) {
-    return res.status(401).json({ error: "Not authenticated middleware" });
+    console.log("Token not present")
+    return res.status(401).json({ error: "Not authenticated" });
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
-    req.user = decoded; // store user id in request
+    console.log("token before verify",{token})
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
+    req.user = decoded.userId || decoded.id || decoded; // support multiple formats
+
     next();
   } catch (err) {
     return res.status(401).json({ error: "Invalid or expired token" });
