@@ -32,23 +32,12 @@ const allowedOrigins = [
 
 ];
 
-
 app.use(
   cors({
-    origin: (origin, cb) => {
-      if (!origin) return cb(null, true);
-
-      if (allowedOrigins.find(o => {
-        if (o instanceof RegExp) return o.test(origin);
-        return o === origin;
-      })) {
-        cb(null, true);
-      } else {
-        console.log("❌ CORS BLOCKED:", origin);
-        cb(new Error("CORS blocked"));
-      }
-    },
-    credentials: true,
+    origin: true,        // reflect origin automatically
+    credentials: true,   // allow cookies or auth headers
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization",
   })
 );
 
