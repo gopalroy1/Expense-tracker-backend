@@ -4,7 +4,7 @@ import { prisma } from "../../config/db";
 export const addAccountName = async (req: Request, res: Response) => {
   try {
     //@ts-ignore
-    const userId = req.user.userId; 
+    const userId = req.user; 
     const { accountTypeId, name } = req.body;
 
     if (!accountTypeId || !name) {

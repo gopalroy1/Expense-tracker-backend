@@ -5,7 +5,7 @@ import { prisma } from "../../config/db";
 export const updateNetworthEntry = async (req: Request, res: Response) => {
   try {
     //@ts-ignore
-    const userId = req.user.userId;
+    const userId = req.user;
     const { id } = req.params;
     const { accountType, accountName, balance, snapshotDate } = req.body;
 

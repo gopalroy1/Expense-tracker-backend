@@ -6,7 +6,7 @@ export const addAccountType = async (req: Request, res: Response) => {
   try {
       // console.log("The req ",{req})
       //@ts-ignore
-    const userId = req.user.userId; // from auth middleware
+    const userId = req.user; // from auth middleware
     console.log("userId from the middleware", userId);
     const { type } = req.body;
 

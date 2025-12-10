@@ -30,6 +30,7 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
   try {
     console.log("token before verify",{token})
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
+    console.log("decoded",{decoded})
     req.user = decoded.userId || decoded.id || decoded; // support multiple formats
 
     next();

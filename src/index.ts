@@ -15,7 +15,8 @@ console.log("ENV:", process.env.DATABASE_URL);
 dotenv.config();
 
 const app = express();
-app.use(cookieParser());  
+
+app.use(cookieParser());
 
 const allowedOrigins = [
   "http://localhost:5173",

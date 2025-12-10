@@ -5,12 +5,16 @@ import { prisma } from "../../config/db";
 export const deleteNetworthEntry = async (req: Request, res: Response) => {
   try {
     //@ts-ignore
-    const userId = req.user.userId;
+    console.log("Delete entry called",req.user);
+    //@ts-ignore
+    const userId = req.user;
     const { id } = req.params;
 
     const entry = await prisma.networthEntry.findUnique({ where: { id } });
 
+
     if (!entry || entry.userId !== userId) {
+      console.log({id},userId,entry)
       return res.status(404).json({ message: "Entry not found" });
     }
 

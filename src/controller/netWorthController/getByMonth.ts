@@ -4,7 +4,7 @@ import { prisma } from "../../config/db";
 export const getNetworthByMonth = async (req: Request, res: Response) => {
     try {
       //@ts-ignore
-        const userId = req.user.userId;
+        const userId = req.user;
         //@ts-ignore
 
         const { month ,year} = req.query;
