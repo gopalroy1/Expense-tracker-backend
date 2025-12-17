@@ -1,4 +1,9 @@
-// {
+{
+    "cSpell.words": [
+        "networth"
+    ],
+    "terminal.integrated.shellIntegration.enabled": true
+} // {
 //   "files.exclude": {
 //     "dist": true
 //   }

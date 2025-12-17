@@ -14,14 +14,16 @@ export const getNetworthByMonth = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "month is required (YYYY-MM)" });
     }
 
+      console.log("the month is",{month})
       //@ts-ignore
-  const start = new Date(Date.UTC(year, month - 1, 1));
+  const start = new Date(Date.UTC(year, month-1 , 1));
 
+                  //@ts-ignore
+      const lastDay = new Date(year, month-1, 0).getDate();
       // Start of next month (UTC)
             //@ts-ignore
-const end = new Date(Date.UTC(year, month, 1));
-    end.setMonth(end.getMonth() + 1);
-
+const end = new Date(Date.UTC(year, month-1, lastDay));
+    // end.setMonth(end.getMonth() + 1);
     const entries = await prisma.networthEntry.findMany({
       where: {
         userId,
@@ -32,6 +34,7 @@ const end = new Date(Date.UTC(year, month, 1));
       },
       orderBy: { snapshotDate: "desc" },
     });
+    console.log("Month find many snapshot date",start,end)
 
     return res.json({ entries });
   } catch (err) {

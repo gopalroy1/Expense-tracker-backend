@@ -2,6 +2,7 @@ import { Router } from "express";
 import { addNetworthEntry } from "../controller/netWorthController/addNetworth";
 import { deleteNetworthEntry } from "../controller/netWorthController/deleteNetworthEntry";
 import { getNetworthByMonth } from "../controller/netWorthController/getByMonth";
+import { importMonthData } from "../controller/netWorthController/importData";
 import { updateNetworthEntry } from "../controller/netWorthController/updateNetworthEntry";
 import { authMiddleware } from "../middleware/authMiddleware";
 
@@ -12,5 +13,6 @@ netWorthRoutes.post("/add", authMiddleware,addNetworthEntry);
 netWorthRoutes.get("/getmonth", authMiddleware, getNetworthByMonth);
 netWorthRoutes.put("/update/:id", authMiddleware, updateNetworthEntry);
 netWorthRoutes.delete("/delete/:id", authMiddleware, deleteNetworthEntry);
+netWorthRoutes.post("/import",authMiddleware,importMonthData);
 
 export default netWorthRoutes;

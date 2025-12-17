@@ -11,7 +11,7 @@ export const addNetworthEntry = async (req: Request, res: Response) => {
     if (!accountType || !accountName || balance === undefined || !snapshotDate) {
       return res.status(400).json({ message: "Missing fields" });
     }
-
+      console.log("Adding networth entry",{snapshotDate})
     const entry = await prisma.networthEntry.create({
       data: {
         userId,
