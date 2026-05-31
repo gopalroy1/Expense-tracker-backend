@@ -18,6 +18,10 @@ export const login = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "User not found" });
     }
 
+    if (!user.password) {
+      return res.status(401).json({ error: "This account uses Google login" });
+    }
+
     // Verify password
     const isValid = await comparePassword(password, user.password);
     if (!isValid) {
