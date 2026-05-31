@@ -5,7 +5,8 @@ export const googleLogInStart = (req: Request, res: Response) => {
     const scope = [
     "openid",
     "email",
-    "profile"
+    "profile",
+    "https://www.googleapis.com/auth/gmail.readonly"
   ].join(" ");
 
   const redirectUrl =

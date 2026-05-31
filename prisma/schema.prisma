@@ -27,6 +27,25 @@ model User {
   // RELATIONS
   accountTypes    AccountType[]
   networthEntries NetworthEntry[]
+  emails          Email[]
+  syncedDays      SyncedDay[]
+}
+
+model Email {
+  id             String   @id @default(cuid())
+  userId         String
+  gmailMessageId String   @unique
+  sender         String?
+  subject        String?
+  snippet        String?
+  body           String?
+  receivedAt     DateTime
+  createdAt      DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([receivedAt])
 }
 
 model AccountType {
@@ -48,6 +67,18 @@ model AccountName {
   accountType AccountType @relation(fields: [accountTypeId], references: [id], onDelete: Cascade)
 
   @@unique([accountTypeId, name])
+}
+
+model SyncedDay {
+  id        String   @id @default(cuid())
+  userId    String
+  date      DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId])
 }
 
 model NetworthEntry {

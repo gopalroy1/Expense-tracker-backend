@@ -12,8 +12,7 @@ export const isLoggedIn = async (req: AuthRequest, res: Response) => {
         console.log("The req user form middleware is", req.user)
 
         const user = await prisma.user.findUnique({
-            //@ts-ignore
-            where: { id: req.user?.userId },
+            where: { id: req.user as string },
             select: {
                 id: true,
                 name: true,

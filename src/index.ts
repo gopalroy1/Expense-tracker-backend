@@ -2,6 +2,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
+import morgan from "morgan";
 import accountRoutes from "./routes/accountRoute";
 import authRoutes from "./routes/authRoute";
 import dashboardRoutes from "./routes/dashboardRoutes";
@@ -18,6 +19,7 @@ dotenv.config();
 
 const app = express();
 
+app.use(morgan("[:date[iso]] :method :url :status :response-time ms"));
 app.use(cookieParser());
 
 const allowedOrigins = [
