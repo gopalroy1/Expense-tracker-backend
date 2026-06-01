@@ -6,6 +6,7 @@ import morgan from "morgan";
 import accountRoutes from "./routes/accountRoute";
 import authRoutes from "./routes/authRoute";
 import dashboardRoutes from "./routes/dashboardRoutes";
+import adminRouter from "./routes/adminRoute";
 import emailRouter from "./routes/emailRoute";
 import netWorthRoutes from "./routes/netWorthRoute";
 // import expenseRoutes from "./routes/expenseRoute";
@@ -57,6 +58,7 @@ app.use("/api/account", accountRoutes);
 app.use("/api/networth", netWorthRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/emails", emailRouter);
+app.use("/api/admin", adminRouter);
 
 
 

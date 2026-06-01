@@ -1,0 +1,341 @@
+{
+  "info": {
+    "name": "ExpenseTrackerServer",
+    "_postman_id": "e8f8c6a4-8d3e-4a4f-b001-expense-tracker",
+    "description": "Expense Tracker API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "accountTypeId",
+      "value": ""
+    },
+    {
+      "key": "accountNameId",
+      "value": ""
+    },
+    {
+      "key": "entryId",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Sign Up",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"phone\": \"9876543210\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/signup"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        },
+        {
+          "name": "Is Logged In",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/auth/isloggedin"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/auth/logout"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Account",
+      "item": [
+        {
+          "name": "Add Account Type",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"Savings\"\n}"
+            },
+            "url": "{{baseUrl}}/api/account/addaccount"
+          }
+        },
+        {
+          "name": "Add Account Name",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountTypeId\": \"{{accountTypeId}}\",\n  \"name\": \"HDFC Savings\"\n}"
+            },
+            "url": "{{baseUrl}}/api/account/addaccountname"
+          }
+        },
+        {
+          "name": "Get All Accounts",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/account/getall"
+          }
+        },
+        {
+          "name": "Update Account Type",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"Investment\"\n}"
+            },
+            "url": "{{baseUrl}}/api/account/type/{{accountTypeId}}"
+          }
+        },
+        {
+          "name": "Update Account Name",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"HDFC Current\"\n}"
+            },
+            "url": "{{baseUrl}}/api/account/name/{{accountNameId}}"
+          }
+        },
+        {
+          "name": "Delete Account Type",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/account/type/{{accountTypeId}}"
+          }
+        },
+        {
+          "name": "Delete Account Name",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/account/name/{{accountNameId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Networth",
+      "item": [
+        {
+          "name": "Add Networth Entry",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountType\": \"Savings\",\n  \"accountName\": \"HDFC Savings\",\n  \"balance\": 150000,\n  \"snapshotDate\": \"2026-05-01\"\n}"
+            },
+            "url": "{{baseUrl}}/api/networth/add"
+          }
+        },
+        {
+          "name": "Get Month Data",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/networth/getmonth?month=2026-05"
+          }
+        },
+        {
+          "name": "Update Entry",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"balance\": 160000\n}"
+            },
+            "url": "{{baseUrl}}/api/networth/update/{{entryId}}"
+          }
+        },
+        {
+          "name": "Delete Entry",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/networth/delete/{{entryId}}"
+          }
+        },
+        {
+          "name": "Import Month Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"snapshotDate\": \"2026-05-01\",\n  \"entries\": [\n    {\n      \"accountType\": \"Savings\",\n      \"accountName\": \"HDFC Savings\",\n      \"balance\": 150000\n    },\n    {\n      \"accountType\": \"Investment\",\n      \"accountName\": \"Zerodha\",\n      \"balance\": 300000\n    }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/networth/import"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Monthly Snapshot",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/dashboard/snapshot?month=2026-05"
+          }
+        },
+        {
+          "name": "Networth Trend",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/dashboard/networth-trend?months=6"
+          }
+        },
+        {
+          "name": "Category Trend",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/dashboard/category-trend?months=6"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Emails",
+      "item": [
+        {
+          "name": "Sync Emails",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/emails?from=2026-05-01&to=2026-05-31"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "{{adminToken}}",
+            "type": "string"
+          }
+        ]
+      },
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/admin/users"
+          }
+        },
+        {
+          "name": "Get User Emails",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/admin/emails/{{userId}}"
+          }
+        },
+        {
+          "name": "Get User Emails By Date",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/admin/emails/{{userId}}?from=2026-05-01&to=2026-05-31"
+          }
+        }
+      ]
+    }
+  ]
+}

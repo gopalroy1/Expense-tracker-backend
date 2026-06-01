@@ -1,0 +1,1 @@
+-- existing table, created outside prisma
