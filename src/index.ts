@@ -4,11 +4,12 @@ import dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
 import accountRoutes from "./routes/accountRoute";
+import adminRouter from "./routes/adminRoute";
 import authRoutes from "./routes/authRoute";
 import dashboardRoutes from "./routes/dashboardRoutes";
-import adminRouter from "./routes/adminRoute";
-import expensesRouter from "./routes/expensesRoute";
 import emailRouter from "./routes/emailRoute";
+import expensesRouter from "./routes/expensesRoute";
+import healthRouter from "./routes/healthRoute";
 import netWorthRoutes from "./routes/netWorthRoute";
 // import expenseRoutes from "./routes/expenseRoute";
 dotenv.config();
@@ -24,25 +25,22 @@ const app = express();
 app.use(morgan("[:date[iso]] :method :url :status :response-time ms"));
 app.use(cookieParser());
 
-const allowedOrigins = [
+
+const ALLOWED_ORIGINS = new Set([
+  "https://myfininsight.com",
+  "https://www.myfininsight.com",
   "http://localhost:5173",
   "http://127.0.0.1:5173",
-  /\.ngrok-free\.app$/,
-  /\.ngrok-free\.dev$/,
-  "https://*.ngrok-free.dev",
-  "https://*.ngrok-free.app",
-  "https://expense-tracker-frontend-2rx8wjhgk-gopal-roys-projects-4596e853.vercel.app",
-  "https://expense-tracker-frontend-ten-sooty.vercel.app",
-  "https://expense-tracker-frontend-git-main-gopal-roys-projects-4596e853.vercel.app",
-  "https://expense-tracker-frontend-nfu0mtg3y-gopal-roys-projects-4596e853.vercel.app",
-    /\.trycloudflare\.com$/,
-
-];
+]);
 
 app.use(
   cors({
-    origin: true,        // reflect origin automatically
-    credentials: true,   // allow cookies or auth headers
+    origin: (origin, cb) => {
+      // allow server-to-server / curl (no Origin header)
+      if (!origin || ALLOWED_ORIGINS.has(origin)) return cb(null, true);
+      cb(new Error(`CORS: origin ${origin} not allowed`));
+    },
+    credentials: true,
     methods: "GET,POST,PUT,DELETE,OPTIONS",
     allowedHeaders: "Content-Type,Authorization",
   })
@@ -53,6 +51,7 @@ app.use(
 app.use(express.json());
 
 // app.use("/api/expenses", expenseRoutes);
+app.use("/health", healthRouter);
 app.use("/api/auth", authRoutes);
 // app.use("/api/account", accountRoutes);
 app.use("/api/account", accountRoutes);
