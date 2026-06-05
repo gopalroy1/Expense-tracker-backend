@@ -8,29 +8,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String    @id @default(cuid())
-  name      String
-  email     String    @unique
-  phone     String?   @unique
-  password            String?
-  googleAccessToken   String?
-  googleRefreshToken  String?
-  isAdmin             Boolean  @default(false)
-  city      String?
-  state     String?
-  pincode   String?
-  address   String?
-  dob       DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+// ── Existing tables (owned by main app) ──────────────────────────────────────
 
-  // RELATIONS
-  accountTypes    AccountType[]
-  networthEntries NetworthEntry[]
-  emails          Email[]
-  syncedDays      SyncedDay[]
-  transactions    Transaction[]
+model User {
+  id                 String          @id @default(cuid())
+  name               String
+  email              String          @unique
+  phone              String?         @unique
+  password           String?
+  city               String?
+  state              String?
+  pincode            String?
+  address            String?
+  dob                DateTime?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  googleAccessToken  String?
+  googleRefreshToken String?
+  isAdmin            Boolean         @default(false)
+  AccountType        AccountType[]
+  Email              Email[]
+  NetworthEntry      NetworthEntry[]
+  SyncedDay          SyncedDay[]
 }
 
 model Email {
@@ -43,72 +42,29 @@ model Email {
   body           String?
   receivedAt     DateTime
   createdAt      DateTime @default(now())
+  User           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  transaction  Transaction?
-
-  @@index([userId])
   @@index([receivedAt])
+  @@index([userId])
 }
 
 model AccountType {
-  id           String        @id @default(cuid())
-  userId       String
-  type         String
-  accountNames AccountName[]
+  id          String        @id @default(cuid())
+  userId      String
+  type        String
+  AccountName AccountName[]
+  User        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, type]) // unique per user
+  @@unique([userId, type])
 }
 
 model AccountName {
-  id            String @id @default(cuid())
+  id            String      @id @default(cuid())
   accountTypeId String
   name          String
-
-  accountType AccountType @relation(fields: [accountTypeId], references: [id], onDelete: Cascade)
+  AccountType   AccountType @relation(fields: [accountTypeId], references: [id], onDelete: Cascade)
 
   @@unique([accountTypeId, name])
-}
-
-model SyncedDay {
-  id        String   @id @default(cuid())
-  userId    String
-  date      DateTime
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, date])
-  @@index([userId])
-}
-
-model Transaction {
-  id                  String    @id @default(uuid()) @db.Uuid
-  emailId             String    @unique @map("email_id")
-  userId              String    @map("user_id")
-  transactionId       String?   @map("transaction_id")
-  amount              Decimal?  @db.Decimal(15, 2)
-  type                String?   @db.VarChar(10)
-  platform            String?   @db.VarChar(100)
-  category            String?   @db.VarChar(100)
-  accountType         String?   @map("account_type") @db.VarChar(100)
-  accountNumber       String?   @map("account_number") @db.VarChar(50)
-  accountName         String?   @map("account_name") @db.VarChar(100)
-  transactionDate     DateTime? @map("transaction_date") @db.Date
-  transactionTime     DateTime? @map("transaction_time") @db.Time(0)
-  description         String?
-  rawSubject          String?   @map("raw_subject")
-  isTransactionEmail  Boolean   @default(false) @map("is_transaction_email")
-  confidence          Decimal?  @db.Decimal(3, 2)
-  createdAt           DateTime  @default(now()) @map("created_at")
-
-  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  email Email @relation(fields: [emailId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@map("transactions")
 }
 
 model NetworthEntry {
@@ -118,8 +74,58 @@ model NetworthEntry {
   accountName  String
   balance      Float
   snapshotDate DateTime
+  createdAt    DateTime @default(now())
+  User         User     @relation(fields: [userId], references: [id])
+}
 
+model SyncedDay {
+  id        String   @id @default(cuid())
+  userId    String
+  date      DateTime
   createdAt DateTime @default(now())
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  user User @relation(fields: [userId], references: [id])
+  @@unique([userId, date])
+  @@index([userId])
+}
+
+// ── New tables (owned by this service) ───────────────────────────────────────
+
+model Transaction {
+  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email_id             String    @unique
+  user_id              String
+  transaction_id       String?
+  amount               Decimal?  @db.Decimal(15, 2)
+  type                 String?   @db.VarChar(10)
+  platform             String?   @db.VarChar(100)
+  merchant             String?
+  currency             String    @default("INR")
+  category             String?   @db.VarChar(100)
+  account_type         String?   @db.VarChar(100)
+  account_number       String?   @db.VarChar(50)
+  account_name         String?   @db.VarChar(100)
+  transaction_date     DateTime? @db.Date
+  transaction_time     DateTime? @db.Time(0)
+  description          String?
+  raw_subject          String?
+  is_transaction_email Boolean   @default(false)
+  confidence           Decimal?  @db.Decimal(3, 2)
+  created_at           DateTime  @default(now())
+
+  @@index([user_id])
+  @@map("transactions")
+}
+
+model Account {
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id             String
+  account_type        String?   @db.VarChar(100)
+  account_number      String?   @db.VarChar(50)
+  account_name        String?   @db.VarChar(100)
+  last_transaction_at DateTime?
+  created_at          DateTime  @default(now())
+
+  @@unique([user_id, account_number, account_name])
+  @@map("accounts")
 }

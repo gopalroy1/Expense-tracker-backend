@@ -7,9 +7,9 @@ export const findTransactionsByUserId = async (
 ) => {
     return prisma.transaction.findMany({
         where: {
-            userId,
-            ...(from && to ? { transactionDate: { gte: from, lte: to } } : {}),
+            user_id: userId,
+            ...(from && to ? { transaction_date: { gte: from, lte: to } } : {}),
         },
-        orderBy: { transactionDate: "desc" },
+        orderBy: { transaction_date: "desc" },
     });
 };

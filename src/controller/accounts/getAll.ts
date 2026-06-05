@@ -9,7 +9,7 @@ export const getAllAccounts = async (req: Request, res: Response) => {
     const accountTypes = await prisma.accountType.findMany({
       where: { userId },
       include: {
-        accountNames: true,   // includes all linked account names
+        AccountName: true,
       },
       orderBy: {
         type: "asc", // optional: alphabetical sorting
