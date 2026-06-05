@@ -10,7 +10,7 @@
     "restart": "pm2 restart expense-tracker-backend",
     "stop": "pm2 stop expense-tracker-backend",
     "delete": "pm2 delete expense-tracker-backend",
-    "build": "tsc",
+    "build": "npm run build",
     "migrate": "prisma migrate deploy",
     "deploy": "npm run build && npm run migrate && npm run start"
   },
